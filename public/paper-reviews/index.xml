@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Paper-Reviews on JG</title>
+    <link>http://localhost:1313/JulienGenzling.github.io/paper-reviews/</link>
+    <description>Recent content in Paper-Reviews on JG</description>
+    <generator>Hugo -- 0.129.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 23 Jul 2024 14:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/JulienGenzling.github.io/paper-reviews/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DWI signal reconstruction</title>
+      <link>http://localhost:1313/JulienGenzling.github.io/paper-reviews/dwi/</link>
+      <pubDate>Tue, 23 Jul 2024 14:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/JulienGenzling.github.io/paper-reviews/dwi/</guid>
+      <description>Diffusion-weighted imaging theory Modelling white matter with spherical deconvolution: How and why?
+Diffusion and MRI
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2041910/pdf/13311_2011_Article_40300316.pdf
+Here&amp;rsquo;s an overview of how MRI works:
+Magnetic Alignment: The MRI scanner generates a strong magnetic field that aligns the protons in the body&amp;rsquo;s hydrogen atoms, which are abundant in water and fat.
+Radiofrequency Pulses: The scanner then emits RF pulses at a specific frequency that matches the resonance frequency of the aligned protons. These pulses provide energy, causing the protons to tip out of their alignment with the magnetic field (for example, a 90° RF pulse tips the aligned protons by 90 degrees from their inital alignment with the main magnetic field (B0), from $z$-axis to transverse plane ($x-y$ plane), this tipping creates a detectable signal in the MRI receiver coil).</description>
+    </item>
+  </channel>
+</rss>

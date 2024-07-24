@@ -8,6 +8,7 @@ minify:
   minifyOutput: true
 
 params:
+  math: true
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
   title: Julien Genzling
   keywords: [Machine Learning, Art]
