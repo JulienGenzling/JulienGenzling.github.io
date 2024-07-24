@@ -2,3 +2,79 @@ baseURL: "https://JulienGenzling.github.io/JulienGenzling.github.io/"
 languageCode: en-us
 title: JG
 theme: ["PaperMod"] 
+
+minify:
+  disableXML: true
+  minifyOutput: true
+
+params:
+  env: production # to enable google analytics, opengraph, twitter-cards and schema.
+  title: Julien Genzling
+  keywords: [Machine Learning, Art]
+  author: Julien Genzling
+  DateFormat: "January 2, 2006"
+  defaultTheme: auto # dark, light
+  disableThemeToggle: false
+
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: false
+  disableSpecial1stPost: false
+  disableScrollToTop: false
+  comments: false
+  hidemeta: false
+  hideSummary: false
+  showtoc: false
+  tocopen: false
+
+  label:
+    text: "Julien Genzling"
+    icon: "images/coding.png"
+
+  # profile-mode
+  profileMode:
+    enabled: true # needs to be explicitly set
+    title: "\U0001F44B Welcome ! "
+    subtitle: "This is the website of **Chanin Nantasenamat, Ph.D.** and
+    I create educational content on data science and bioinformatics.
+    Some of you may know me as the **Data Professor**."
+    buttons:
+      - name: Blogs
+        url: blogs
+      - name: Projects
+        url: projects
+
+  # home-info mode
+  homeInfoParams:
+    Title: "Welcome! \U0001F44B"
+    Content: "This is the website of **Chanin Nantasenamat, Ph.D.** and
+    I create educational content on data science and bioinformatics.
+    Some of you may know me as the **Data Professor**."
+
+  socialIcons:
+    - name: linkedin
+      url: "https://www.linkedin.com/in/julien-genzling-787a44241/"
+    - name: github
+      url: "https://github.com/JulienGenzling"
+
+
+menu:
+  main:
+    - identifier: about
+      name: About
+      url: /about/
+      weight: 4
+    - identifier: Paper Reviews
+      name: Paper Reviews
+      url: /paper-reviews/
+      weight: 1
+    - identifier: Art gallery
+      name: Art gallery
+      url: /gallery/
+      weight: 2
+    #- identifier: tags
+    #  name: tags
+    #  url: /tags/
+    #  weight: 4

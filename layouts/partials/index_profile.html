@@ -1,0 +1,179 @@
+<div class="profile">
+    {{- with site.Params.profileMode }}
+    <div class="profile_inner">
+        <div>
+            <div id="home-logo3d"><div id="circularloader">
+                <div id="lds-dual-ring"></div>
+            </div></div>        
+        </div>
+        {{- if .imageUrl -}}
+        {{- $img := "" }}
+        {{- if not (urls.Parse .imageUrl).IsAbs }}
+            {{- $img = resources.Get .imageUrl }}
+        {{- end }}
+        {{- if $img }}
+            {{- $processableFormats := (slice "jpg" "jpeg" "png" "tif" "bmp" "gif") -}}
+            {{- if hugo.IsExtended -}}
+                {{- $processableFormats = $processableFormats | append "webp" -}}
+            {{- end -}}
+            {{- $prod := (hugo.IsProduction | or (eq site.Params.env "production")) }}
+            {{- if and (in $processableFormats $img.MediaType.SubType) (eq $prod true)}}
+                {{- if (not (and (not .imageHeight) (not .imageWidth))) }}
+                    {{- $img = $img.Resize (printf "%dx%d" .imageWidth .imageHeight) }}
+                {{- else if .imageHeight }}
+                    {{- $img = $img.Resize (printf "x%d" .imageHeight) }}
+                {{ else if .imageWidth }}
+                    {{- $img = $img.Resize (printf "%dx" .imageWidth) }}
+                {{ else }}
+                    {{- $img = $img.Resize "150x150" }}
+                {{- end }}
+            {{- end }}
+            <img draggable="false" src="{{ $img.Permalink }}" alt="{{ .imageTitle | default "profile image" }}" title="{{ .imageTitle }}"
+                height="{{ .imageHeight | default 150 }}" width="{{ .imageWidth | default 150 }}" />
+        {{- else }}
+        <img draggable="false" src="{{ .imageUrl | absURL }}" alt="{{ .imageTitle | default "profile image" }}" title="{{ .imageTitle }}"
+            height="{{ .imageHeight | default 150 }}" width="{{ .imageWidth | default 150 }}" />
+        {{- end }}
+        {{- end }}
+        <h1>{{ .title | default site.Title | markdownify }}</h1>
+        <span>{{ .subtitle | markdownify }}</span>
+        {{- partial "social_icons.html" -}}
+
+        {{- with .buttons }}
+        <div class="buttons">
+            {{- range . }}
+            <a class="button" href="{{ trim .url " " }}" rel="noopener" title="{{ .name }}">
+                <span class="button-inner">
+                    {{ .name }}
+                    {{- if (findRE "://" .url) }}&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="14" width="14">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                    {{- end }}
+                </span>
+            </a>
+            {{- end }}
+        </div>
+        {{- end }}
+    </div>
+    {{- end}}
+</div>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script> -->
+
+<script type="module">
+    import * as THREE from 'https://unpkg.com/three@0.126.1/build/three.module.js';
+    import { OrbitControls } from 'https://unpkg.com/three@0.126.1/examples/jsm/controls/OrbitControls.js';
+    import { GLTFLoader } from 'https://unpkg.com/three@0.126.1/examples/jsm/loaders/GLTFLoader.js';
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const loadingManager = new THREE.LoadingManager();
+        const scene = new THREE.Scene();
+        // scene.background = new THREE.Color(0xbb3a25);
+
+        const container = document.getElementById('home-logo3d');
+        const circularloader = document.getElementById('circularloader');
+        const nav = document.getElementById('navbar');
+        // var xsystratitle = document.getElementById('home-xsystratitle');
+        var size = window.innerHeight / 3;
+        size = Math.max(size, 200);
+        container.style.height = size + 'px';
+        container.style.width = size + 'px';
+        circularloader.style.height = size + 'px';
+        circularloader.style.width = size + 'px';
+
+        // var home = document.getElementById('home');
+        // home.style.height = window.innerHeight - nav.offsetHeight + "px";
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(size, size);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.outputEncoding = THREE.sRGBEncoding;
+
+        container.appendChild(renderer.domElement);
+        const target = new THREE.Vector3(0, 0, 0);
+        const initialCameraPosition = new THREE.Vector3(
+            20 * Math.sin(0.2 * Math.PI),
+            5,
+            20 * Math.cos(0.2 * Math.PI)
+        );
+
+        const scale = .6;
+        const camera = new THREE.OrthographicCamera(
+            -scale,
+            scale,
+            scale,
+            -scale,
+            0.01,
+            50000
+        );
+        camera.position.copy(initialCameraPosition);
+        camera.lookAt(target);
+
+        const ambientLight = new THREE.AmbientLight(0xcccccc, 1);
+        scene.add(ambientLight);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.autoRotate = true;
+        controls.target = target;
+        controls.enableZoom = false;
+        controls.enablePan = false;
+        camera.position.z = 5;
+
+        let req = null;
+        let frame = 0;
+        function easeOutCirc(x) {
+            return Math.sqrt(1 - Math.pow(x - 1, 4));
+        }
+
+        const animate = () => {
+            req = requestAnimationFrame(animate);
+            frame = frame <= 100 ? frame + 1 : frame;
+            if (frame <= 100) {
+                const p = initialCameraPosition;
+                const rotSpeed = -easeOutCirc(frame / 120) * Math.PI * 20;
+
+                camera.position.y = 5;
+                camera.position.x =
+                    p.x * Math.cos(rotSpeed) + p.z * Math.sin(rotSpeed);
+                camera.position.z =
+                    p.z * Math.cos(rotSpeed) - p.x * Math.sin(rotSpeed);
+                camera.lookAt(target);
+            } else {
+                controls.update();
+            }
+
+            renderer.render(scene, camera);
+        };
+
+        let loader = new GLTFLoader(loadingManager);
+        loader.load(
+            'logo3D.glb',
+            function (gltf) {
+                scene.add(gltf.scene);
+                animate();
+            },
+        );
+
+        loadingManager.onLoad = () => {
+            circularloader.style.display = 'none';
+        };
+
+        function reportWindowSize() {
+            const size = Math.max(200, window.innerHeight / 3);
+            home.style.minHeight = size + xsystratitle.offsetHeight + "px";
+            home.style.height = window.innerHeight - nav.offsetHeight + "px";
+            container.style.height = size + 'px';
+            container.style.width = size + 'px';
+            renderer.setSize(size, size);
+        }
+
+        window.onresize = reportWindowSize;
+    });
+</script>
+
+
