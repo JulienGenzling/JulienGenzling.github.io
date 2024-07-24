@@ -31,18 +31,20 @@ params:
 
   label:
     text: "Julien Genzling"
-    icon: "images/coding.png"
+    icon: "taupek.jpeg"
+    iconHeight: 30
 
   # profile-mode
   profileMode:
     enabled: true # needs to be explicitly set
     title: "\U0001F44B Welcome ! "
-    subtitle: "This is the website of **Chanin Nantasenamat, Ph.D.** and
-    I create educational content on data science and bioinformatics.
-    Some of you may know me as the **Data Professor**."
+    subtitle: "This is the website of **Julien Genzling**. I'll share some paper reviews 🧑&zwj;💻, projects 🧑&zwj;🔬 and art 🧑&zwj;🎨 that I like."
+    # https://unicode.org/emoji/charts/full-emoji-list.html#1f468_200d_1f3a8
     buttons:
-      - name: Blogs
-        url: blogs
+      - name: Paper Reviews
+        url: paper-reviews
+      - name: Art Gallery
+        url: gallery
       - name: Projects
         url: projects
 
@@ -62,18 +64,18 @@ params:
 
 menu:
   main:
-    - identifier: about
-      name: About
-      url: /about/
-      weight: 4
     - identifier: Paper Reviews
       name: Paper Reviews
       url: /paper-reviews/
-      weight: 1
+      weight: 2
     - identifier: Art gallery
       name: Art gallery
       url: /gallery/
-      weight: 2
+      weight: 3
+    - identifier: Projects
+      name: Projects
+      url: /projects/
+      weight: 3
     #- identifier: tags
     #  name: tags
     #  url: /tags/
