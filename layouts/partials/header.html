@@ -44,7 +44,7 @@
         <div class="logo">
             {{- $label_text := (site.Params.label.text | default site.Title) }}
             {{- if site.Title }}
-            <img src="/taupek.jpeg" alt="Logo" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 5px;">
+            <img src="taupek.jpeg" alt="Logo" class="logo-img">
             <a href="{{ "" | absLangURL }}" accesskey="h" title="{{ $label_text }} (Alt + H)">
                 {{- if site.Params.label.icon }}
                 {{- $img := resources.Get site.Params.label.icon }}
@@ -148,3 +148,50 @@
         </ul>
     </nav>
 </header>
+
+<style>
+    .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    .logo {
+        display: flex;
+        align-items: center;
+    }
+    .logo-img {
+        width: 24px;
+        height: 24px;
+        margin-right: 5px;
+    }
+    .logo-img {
+    width: 24px;
+    height: 24px;
+    border-radius: 15%;
+    margin-right: 5px;
+    transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+    .logo-img:hover {
+        animation: spin 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    @keyframes  spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    80% {
+        transform: rotate(355);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+    .logo-switches {
+        margin-left: 20px;
+    }
+
+</style>
