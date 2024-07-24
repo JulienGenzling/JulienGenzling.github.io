@@ -44,7 +44,7 @@
         <div class="logo">
             {{- $label_text := (site.Params.label.text | default site.Title) }}
             {{- if site.Title }}
-            <img src="/static/taupek.jpeg" alt="Logo" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 5px;">
+            <img src="/taupek.jpeg" alt="Logo" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 5px;">
             <a href="{{ "" | absLangURL }}" accesskey="h" title="{{ $label_text }} (Alt + H)">
                 {{- if site.Params.label.icon }}
                 {{- $img := resources.Get site.Params.label.icon }}
