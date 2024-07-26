@@ -76,7 +76,7 @@ menu:
     - identifier: Projects
       name: Projects
       url: /projects/
-      weight: 3
+      weight: 4
     #- identifier: tags
     #  name: tags
     #  url: /tags/
