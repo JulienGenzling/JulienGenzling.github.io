@@ -79,7 +79,7 @@
         const circularloader = document.getElementById('circularloader');
         const nav = document.getElementById('navbar');
         // var xsystratitle = document.getElementById('home-xsystratitle');
-        var size = window.innerHeight / 3;
+        var size = window.innerHeight / 2.5;
         size = Math.max(size, 200);
         container.style.height = size + 'px';
         container.style.width = size + 'px';
@@ -102,7 +102,7 @@
             20 * Math.cos(0.2 * Math.PI)
         );
 
-        const scale = .6;
+        const scale = 3;
         const camera = new THREE.OrthographicCamera(
             -scale,
             scale,
@@ -153,7 +153,7 @@
         let loader = new GLTFLoader(loadingManager);
 
         loader.load(
-            'logo3D.glb',
+            'taupek.glb',
             function (gltf) {
                 scene.add(gltf.scene);
                 animate();
