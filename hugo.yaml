@@ -7,7 +7,9 @@ minify:
   disableXML: true
   minifyOutput: true
 
+
 params:
+  custom_css: "/style.css"
   math: true
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
   title: Julien Genzling
@@ -61,8 +63,7 @@ params:
       url: "https://www.linkedin.com/in/julien-genzling-787a44241/"
     - name: github
       url: "https://github.com/JulienGenzling"
-
-
+  
 menu:
   main:
     - identifier: Paper Reviews

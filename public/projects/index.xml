@@ -6,8 +6,16 @@
     <description>Recent content in Projects on JG</description>
     <generator>Hugo -- 0.129.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 23 Jul 2024 14:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 31 Jul 2024 14:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/JulienGenzling.github.io/projects/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Medical images registration</title>
+      <link>http://localhost:1313/JulienGenzling.github.io/projects/medical-images-registration/</link>
+      <pubDate>Wed, 31 Jul 2024 14:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/JulienGenzling.github.io/projects/medical-images-registration/</guid>
+      <description>A key challenge in biomedical image analysis and particularly in brain image analysis is registration; human anatomical variability is the norm, necessitating the transformation of image data into standard coordinates. This standardization facilitates analysis and allows results to be generalized to a larger population.
+Affine registration, which uses linear transformations, provides a robust initial alignment of overall brain structures. This is followed by diffeomorphic registration, which models smooth, non-linear deformations to capture intricate anatomical details.</description>
+    </item>
     <item>
       <title>Diffusion-weighted imaging theory</title>
       <link>http://localhost:1313/JulienGenzling.github.io/projects/dwi/</link>
