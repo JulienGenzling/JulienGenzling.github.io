@@ -141,7 +141,7 @@ $
 However finding the inverse of the Hessian in high dimensions to compute the Newton direction can be an expensive operation. In quasi-Newton methods the Hessian matrix does not need to be computed. The Hessian is updated by analyzing successive gradient vectors instead.
 
 
-In `DIPY`, this optimization is done in the `òptimize` function of the `ÀffineRegistration` class.
+In `DIPY`, this optimization is done in the `optimize` function of the `ÀffineRegistration` class.
 
 #### What is $S$ and how to compute $\nabla S$ ? 
 
@@ -236,9 +236,9 @@ $
 
 In order to avoid local minima and to decrease computatio time, a hierarchical multiresolution optimization scheme is used. This means that $\mathbf{A}$ is initially calculated for our images with a downsized resolution, then as the resolution is increased, fine misalignments are recovered. The low resolution images are smoothed with a gaussian kernel. 
 
-In `DIPY`, this corresponds to the `level\_iters`, `sigmas` and `factors` argument that are used to initialize the `ÀffineRegistration` class. The `level\_iters` argument is the number of iterations at each scale of the scale space (by default, a 3-level scale space with iterations sequence equal to $[10000, 1000, 100]$ is used). The `sigmas` argument is a custom smoothing parameter to build the scale space (standard deviation of the smoothing gaussian kernels, defaults to $[3,1,0]$). The `factors` argument defines the resolution of the scale spaces at each level($\Omega$), it defaults to $[4,2,1]$.
+In `DIPY`, this corresponds to the `level_iters`, `sigmas` and `factors` argument that are used to initialize the `ÀffineRegistration` class. The `level_iters` argument is the number of iterations at each scale of the scale space (by default, a 3-level scale space with iterations sequence equal to $[10000, 1000, 100]$ is used). The `sigmas` argument is a custom smoothing parameter to build the scale space (standard deviation of the smoothing gaussian kernels, defaults to $[3,1,0]$). The `factors` argument defines the resolution of the scale spaces at each level($\Omega$), it defaults to $[4,2,1]$.
 
-#### Image registration result example
+#### Image affine registration result example
 
 ![affine_reg](../../projects/registration/affine_moving.png)
 
@@ -246,13 +246,89 @@ You can see on this overlay that after affine registration, both brains are alig
 
 ## Diffeomorphic map registration 
 
+A diffeomorphism is an invertible and differentiable function whose inverse is also differentiable. The warp registration is implemented in `DIPY` in `dipy/align/imwarp.py`
+
+The diffeomorphism $\Psi$ is implemented by means of a deformation field $\psi$ that assigns to each point $\mathbf{x}$ a displacement vector $\psi(\mathbf{x})$ such that $\Psi(\mathbf{x}) = \mathbf{x} + \psi(\mathbf{x})$. In `DIPY`, the diffeomorphic map (implemented in the `DiffeomorphicMap` class) includes a pre-alignment matrix $\mathbf{P}$ so that $\Psi(\mathbf{x}) = \mathbf{Px} + \psi(\mathbf{Px})$. This matrix is the affine matrix that was calculated in the last section. 
+
+The static and moving images are projected into a discretized deformation field (the shape of the displacement field is the `disp_shape` argument in the `DiffeomorphicMap` class, which usually is the shape of the domain). 
+
+The following diagram provides an overview of the registration process (taken from [5]).
+
+
+![warping](../../projects/registration/warping.png)
+
+Here the objective is to calculate the function $f$ on the diagram. 
+
+### Symmetric Diffeomorphic Registration
+
+The greedy algorithm for Symmetric Diffeomorphic Registration (“**Greedy SyN**”) [6] finds a diffeomorphism mapping back and forth between two given images by looking for two diffeomorphisms mapping the given images to an “intermediate” shape and then composing the intermediate mappings to find the diffeomorphism between the two original images.
+
+Both displacement fields (forward and backward) have the same discretization (same grid shape and grid-to-space transform), which means that the deformation fields actually define endomorphisms. The domain of these endomorphisms (equal to their codomain) is called “reference domain”, and similarly, their discretization grid is called “reference grid”.
+For convenience, the reference discretization (grid shape and grid-tospace transform) is arbitrarily chosen to be the same as the static image.
+As a consequence, the prealigning matrix corresponding to the static-to-reference diffeomorphism ($\Psi_1$ in the above figure) is the identity (only the moving image is pre-aligned to the reference)
+
+![warping](../../projects/registration/syn.png)
+
+
+The following is an overview of the Greedy SyN algorithm: 
+
+![warping](../../projects/registration/syn-algo.png)
+
+
+Here is a subsample of the forward warp field (the grid is the displacement field grid).
+
+![warping](../../projects/registration/forward_warp.png)
+
+And the backward warp field:
+
+![warping](../../projects/registration/backward_warp.png)
+
+
+#### Image affine + warp registration result example
+
+![warp_reg](../../projects/registration/warped_moving.png)
+
+You can see on this overlay that after affine and warp registration, both brains are very well aligned. 
+
+The result usually is even better is we get rid of the skull (skullstripping step) before doing the registration: 
+
+![affine_reg_skull](../../projects/registration/affine_moving_skullstripped.png)
+
+![warp_reg_skull](../../projects/registration/warped_moving_skullstripped.png)
+
 ## RSL registration code
 
+We implemented a complete registration code that handles all of these steps (skullstripping, affine registration, warp registration) in the following github repository : https://github.com/rauschecker-sugrue-labs/rsl-register. 
+
+You can register two images by launching the following command : 
+
+```bash
+python register.py fixed_image_path
+moving_image_path 
+output_directory 
+--already_skullstripped 
+--registration_type 
+--overwrite 
+--log_path 
+--verbosity 
+--nthreads 
+--nickname 
+--affine_transform_path
+--warp_transform_path 
+--plot
+```
+
+
+
+## References
 
 
 [0]: https://dipy.org/
 [1]: https://nipy.org/nibabel/coordinate_systems.html
 [2]: https://en.wikipedia.org/wiki/Trilinear_interpolation
 [3]: https://en.wikipedia.org/wiki/Limited-memory_BFGS
-[4]: M. Unser, A. Aldroubi, and M. Eden, “Fast B-spline transforms for continuous image representation and interpo-lation,” IEEE Trans. Pattern
+[4]: M. Unser, A. Aldroubi, and M. Eden, *“Fast B-spline transforms for continuous image representation and interpolation,”* IEEE Trans. Pattern
 Anal. Machine Intell., vol. 13, pp. 277–285, Mar. 1991.
+
+[5]: https://www.cimat.mx/~omar/syn/tutorial.pdf
+[6]: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2276735/
